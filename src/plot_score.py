@@ -2,7 +2,7 @@ import plotly.graph_objects as go
 import plotly.express as px
 import pandas as pd
 
-with open('score_with_gps_6_pollutants.xlsx', 'rb') as f:
+with open('../output/score_with_gps_6_pollutants.xlsx', 'rb') as f:
     df = pd.read_excel(f)
 
 df = df.loc[df['total_score'].notna()]

@@ -1,7 +1,7 @@
 import pandas
 import openpyxl
 
-with open('2021_with_scoring.xlsx', 'rb') as f:
+with open('../data/2021_with_scoring.xlsx', 'rb') as f:
     all_pollutants = pandas.read_excel(f, sheet_name=['NMHC','SO2','NO2','PM2.5','PM10','OX', 'Stations'])
 
 msc = '測定局コード'

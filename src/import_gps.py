@@ -4,10 +4,10 @@ import pandas
 station_code = "国環研局番"
 
 def main():
-    with open("gps.json", "r", encoding="utf-16") as infile:
+    with open("../output/gps.json", "r", encoding="utf-16") as infile:
         geocoding_results = json.load(infile)
 
-    with open('2021_with_scoring.xlsx', 'rb') as f:
+    with open('../data/2021_with_scoring.xlsx', 'rb') as f:
         df = pandas.read_excel(f, sheet_name=['Stations'])['Stations']
 
     df[["latitude", "longitude"]] = None
@@ -17,7 +17,7 @@ def main():
 
     print(df[[station_code, "latitude", "longitude"]].head())
 
-    with pandas.ExcelWriter('2021_with_scoring.xlsx', if_sheet_exists="overlay", mode="a") as excel_writer:
+    with pandas.ExcelWriter('../data/2021_with_scoring.xlsx', if_sheet_exists="overlay", mode="a") as excel_writer:
         df.to_excel(excel_writer, sheet_name="Stations", index=False)
 
 
