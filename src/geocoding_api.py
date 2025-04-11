@@ -1,14 +1,28 @@
+import os
+from dotenv import load_dotenv
+
 import googlemaps
 import json
 import pandas
-
-station_code = "国環研局番"
+import argparse
 
 def main():
-    gmaps = googlemaps.Client(key='AIzaSyDiYs8zSK-R43YvIk19YeeHo6QbtK8xOY4')
+    """
+    Call Google Geocoding API on monitoring station addresses and produce a JSON file with the API responses
+    """
+    parser = argparse.ArgumentParser()
+    parser.add_argument("input_file", help="a XLSX Workbook with a Stations sheet produced by address_to_gps.py")
+    parser.add_argument("input_sheet", help="sheet name inside XLSX file, probably Stations")
+    parser.add_argument("gps_json", help="filename for JSON output of GPS info")
+    args = parser.parse_args()
 
-    with open('../data/2021_with_scoring.xlsx', 'rb') as f:
-        df = pandas.read_excel(f, sheet_name=["Stations"])["Stations"]
+    station_code = "国環研局番"
+
+    load_dotenv()
+    gmaps = googlemaps.Client(key=os.getenv('GEOCODING_API_KEY'))
+
+    with open(args.input_file, 'rb') as f:
+        df = pandas.read_excel(f, sheet_name=[args.input_sheet])[args.input_sheet]
 
     output = []
 
@@ -17,11 +31,8 @@ def main():
         geocode_result = gmaps.geocode(row["full_address"])
         output.append({"station_code": row[station_code], "full_address": row["full_address"], "response": geocode_result[0]})
 
-    with open("../output/gps.json", "w", encoding="utf-16") as outfile:
+    with open(args.gps_json, "w", encoding="utf-16") as outfile:
         json.dump(output, outfile, ensure_ascii=False, indent=2)
-
-    with pandas.ExcelWriter(args.output_file, if_sheet_exists="overlay", mode="a") as excel_writer:
-        df.to_excel(excel_writer, sheet_name="Stations", index=False)
 
 if __name__ == "__main__":
     main()
