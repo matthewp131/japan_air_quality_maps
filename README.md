@@ -19,6 +19,7 @@ Create a .env file as follows:
 
 ```bash
 GEOCODING_API_KEY=<YOUR_KEY>
+GH_PAGES_MAPBOX_API_TOKEN=<YOUR_KEY>
 ```
 
 ### Download Data and Calculate Scores Column
