@@ -15,41 +15,47 @@ In addition to dependencies specified by import statements, you will also need t
 
 Obtain a [Geocoding API](https://developers.google.com/maps/documentation/geocoding) Key and a [Mapbox API]() Token.
 
-Create a .env file as follows
+Create a .env file as follows:
 
 ```bash
 GEOCODING_API_KEY=<YOUR_KEY>
 ```
 
-### Monitoring stations
+### Download Data and Calculate Scores Column
 
-Go to ... and download station locations txt file
+WIP...see data already in `data` directory
+
+### Run Python Scripts
+
+#### Monitoring stations
+
+Go to TBD and download station locations txt file. It is already included in `data/TM20210000.txt`.
 
 ```bash
 cd src
 python ./address_to_gps.py ../data/TM20210000.txt ../data/2021.xlsx Stations
 ```
 
-### Fetch GPS Location of all Stations
+#### Fetch GPS Location of all Stations
 
 ```bash
 python ./geocoding_api.py ../data/2021.xlsx Stations ../output/gps_2021.json
 ```
 
-### Add GPS Lat/Lon to XLSX
+#### Add GPS Lat/Lon to XLSX
 
 ```bash
 python ./import_gps.py ../output/gps_2021.json ../data/2021.xlsx Stations
 ```
 
-### Produce Scoring Sheet
+#### Produce Scoring Sheet
 
 ```bash
 python .\scoring.py ..\data\2021.xlsx ../output/test.xlsx
 ```
 
-### Generate Plotly Maps
+#### Generate Plotly Maps
 
 ```bash
-
+python .\plot_score.py ../output/2021_scores.xlsx ..\docs\plotly\
 ```
