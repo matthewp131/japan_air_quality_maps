@@ -86,7 +86,7 @@ fig = px.scatter_mapbox(df5, lat="latitude", lon="longitude", size="size", size_
                         title=main_pollutant)
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 # fig.show()
-plotly.offline.plot(fig, filename='../output/japan_2021_pm2_5.html')
+plotly.offline.plot(fig, filename='../docs/plotly/japan_2021_pm2_5.html')
 
 # main_pollutant = 'PM2.5_OX'
 # df5 = df.loc[df[main_pollutant].notna()]
