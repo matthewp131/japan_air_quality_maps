@@ -1,5 +1,6 @@
 import argparse
 import pandas
+import os.path
 
 headers = {
     "prefecture": "都道府県名",
@@ -19,8 +20,12 @@ def main():
     df["full_address"] = df[headers["prefecture"]].astype(str) + df[headers["city"]].astype(str) + df[headers["address"]].astype(str)
     print(df["full_address"].head())
 
-    with pandas.ExcelWriter(args.output_file, if_sheet_exists="overlay", mode="a") as excel_writer:
-        df.to_excel(excel_writer, sheet_name=args.output_sheet, index=False)
+    if os.path.isfile(args.output_file):
+        with pandas.ExcelWriter(args.output_file, if_sheet_exists="overlay", mode="a") as excel_writer:
+            df.to_excel(excel_writer, sheet_name=args.output_sheet, index=False)
+    else:
+        with pandas.ExcelWriter(args.output_file, mode="w") as excel_writer:
+            df.to_excel(excel_writer, sheet_name=args.output_sheet, index=False)
 
 
 if __name__ == "__main__":

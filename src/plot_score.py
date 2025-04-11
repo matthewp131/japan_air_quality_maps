@@ -1,3 +1,5 @@
+import openpyxl
+import plotly
 import plotly.express as px
 import pandas as pd
 
@@ -55,25 +57,25 @@ df['hover_data'] = '<br>NMHC: ' + df['NMHC'].astype(str) + '<br>' + 'NOX: ' + df
 # fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 # fig.show()
 
-main_pollutant = 'NMHC'
-df5 = df.loc[df[main_pollutant].notna()]
-fig = px.scatter_mapbox(df5, lat="latitude", lon="longitude", size="size", size_max=8, hover_name="full_address",
-                        hover_data={"hover_data": True, "size": False, "latitude": False, "longitude": False},
-                        color=main_pollutant, zoom=5, color_continuous_scale=['#0704c7','#6ff542','#fcfc0a','#f01616'],
-                        # color_continuous_midpoint=0.5,
-                        title=main_pollutant)
-fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-fig.show()
-
-main_pollutant = 'NOX_SO2_NMHC'
-df5 = df.loc[df[main_pollutant].notna()]
-fig = px.scatter_mapbox(df5, lat="latitude", lon="longitude", size="size", size_max=8, hover_name="full_address",
-                        hover_data={"hover_data": True, "size": False, "latitude": False, "longitude": False},
-                        color=main_pollutant, zoom=5, color_continuous_scale=['#0704c7','#6ff542','#fcfc0a','#f01616'],
-                        # color_continuous_midpoint=0.5,
-                        title=main_pollutant)
-fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-fig.show()
+# main_pollutant = 'NMHC'
+# df5 = df.loc[df[main_pollutant].notna()]
+# fig = px.scatter_mapbox(df5, lat="latitude", lon="longitude", size="size", size_max=8, hover_name="full_address",
+#                         hover_data={"hover_data": True, "size": False, "latitude": False, "longitude": False},
+#                         color=main_pollutant, zoom=5, color_continuous_scale=['#0704c7','#6ff542','#fcfc0a','#f01616'],
+#                         # color_continuous_midpoint=0.5,
+#                         title=main_pollutant)
+# fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+# fig.show()
+#
+# main_pollutant = 'NOX_SO2_NMHC'
+# df5 = df.loc[df[main_pollutant].notna()]
+# fig = px.scatter_mapbox(df5, lat="latitude", lon="longitude", size="size", size_max=8, hover_name="full_address",
+#                         hover_data={"hover_data": True, "size": False, "latitude": False, "longitude": False},
+#                         color=main_pollutant, zoom=5, color_continuous_scale=['#0704c7','#6ff542','#fcfc0a','#f01616'],
+#                         # color_continuous_midpoint=0.5,
+#                         title=main_pollutant)
+# fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+# fig.show()
 
 main_pollutant = 'PM2.5'
 df5 = df.loc[df[main_pollutant].notna()]
@@ -83,14 +85,15 @@ fig = px.scatter_mapbox(df5, lat="latitude", lon="longitude", size="size", size_
                         # color_continuous_midpoint=0.5,
                         title=main_pollutant)
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-fig.show()
+# fig.show()
+plotly.offline.plot(fig, filename='../output/japan_2021_pm2_5.html')
 
-main_pollutant = 'PM2.5_OX'
-df5 = df.loc[df[main_pollutant].notna()]
-fig = px.scatter_mapbox(df5, lat="latitude", lon="longitude", size="size", size_max=8, hover_name="full_address",
-                        hover_data={"hover_data": True, "size": False, "latitude": False, "longitude": False},
-                        color=main_pollutant, zoom=5, color_continuous_scale=['#0704c7','#6ff542','#fcfc0a','#f01616'],
-                        # color_continuous_midpoint=0.5,
-                        title=main_pollutant)
-fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-fig.show()
+# main_pollutant = 'PM2.5_OX'
+# df5 = df.loc[df[main_pollutant].notna()]
+# fig = px.scatter_mapbox(df5, lat="latitude", lon="longitude", size="size", size_max=8, hover_name="full_address",
+#                         hover_data={"hover_data": True, "size": False, "latitude": False, "longitude": False},
+#                         color=main_pollutant, zoom=5, color_continuous_scale=['#0704c7','#6ff542','#fcfc0a','#f01616'],
+#                         # color_continuous_midpoint=0.5,
+#                         title=main_pollutant)
+# fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+# fig.show()
