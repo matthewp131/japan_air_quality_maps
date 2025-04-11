@@ -26,8 +26,8 @@ GH_PAGES_MAPBOX_API_TOKEN=<YOUR_KEY>
 
 [National Institute for Environmental Studies, The Environmental Observatory, Air Pollution Monitoring Data File](https://tenbou.nies.go.jp/download/)
 
-測定局データ for Monitoring Station data
-月間値・年間値データ for Air Quality data
+* 測定局データ for Monitoring Station data
+* 月間値・年間値データ for Air Quality data
 
 See data already in `data` directory
 
