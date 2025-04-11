@@ -1,12 +1,9 @@
 import argparse
-from time import sleep
+import os
+import os.path
+import re
 
 import pandas
-import os.path
-import os
-from pathlib import Path
-import re
-from openpyxl import Workbook, load_workbook
 
 
 def extract_pollutant_id_from_filename(filename):
@@ -35,8 +32,8 @@ def extract_pollutant_id_from_filename(filename):
     if match:
         # The captured month is in group 1
         return int(match.group(1))
-    else:
-        return None
+
+    return None
 
 
 def get_all_files(directory_path):
@@ -63,7 +60,9 @@ def get_all_files(directory_path):
 
     # Check if the directory exists implicitly by seeing if os.walk yielded anything
     if not file_paths and not os.path.isdir(directory_path):
-        print(f"Warning: Directory not found or is empty at {os.path.abspath(directory_path)}")
+        print(
+            f"Warning: Directory not found or is empty at {os.path.abspath(directory_path)}"
+        )
 
     return file_paths
 
@@ -93,11 +92,13 @@ def keep_cols_up_to_substring(df, substring):
     if target_index != -1:
         # Select columns from the start up to and including the target index
         # .iloc is efficient for integer-based indexing
-        return df.iloc[:, :target_index + 1]
-    else:
-        # If no column contains the substring, return the original DataFrame
-        print(f"Warning: No column name containing '{substring}' found. Returning original DataFrame.")
-        return df
+        return df.iloc[:, : target_index + 1]
+
+    # If no column contains the substring, return the original DataFrame
+    print(
+        f"Warning: No column name containing '{substring}' found. Returning original DataFrame."
+    )
+    return df
 
 
 def add_percentage_score_column(df, substring):
@@ -123,12 +124,16 @@ def add_percentage_score_column(df, substring):
             break  # Stop after finding the first match
 
     if target_col_name is None:
-        print(f"Warning: No column name containing '{substring}' found. No 'Score' column added.")
+        print(
+            f"Warning: No column name containing '{substring}' found. No 'Score' column added."
+        )
         return df
 
     # Check if the target column is numeric
     if not pandas.api.types.is_numeric_dtype(df[target_col_name]):
-        print(f"Warning: Target column '{target_col_name}' is not numeric. Cannot calculate percentage score.")
+        print(
+            f"Warning: Target column '{target_col_name}' is not numeric. Cannot calculate percentage score."
+        )
         return df
 
     # Calculate the maximum value in the target column
@@ -136,14 +141,19 @@ def add_percentage_score_column(df, substring):
 
     # Handle potential division by zero or max_value being NaN
     if pandas.isna(max_value):
-        print(f"Warning: Maximum value in '{target_col_name}' is NaN. Cannot calculate percentage score.")
+        print(
+            f"Warning: Maximum value in '{target_col_name}' is NaN. Cannot calculate percentage score."
+        )
         return df
-    elif max_value == 0:
-        print(f"Warning: Maximum value in '{target_col_name}' is 0. Setting all scores to 0.")
-        df['Score'] = 0.0
+
+    if max_value == 0:
+        print(
+            f"Warning: Maximum value in '{target_col_name}' is 0. Setting all scores to 0."
+        )
+        df["Score"] = 0.0
     else:
         # Calculate the percentage score
-        df['Score'] = df[target_col_name] / max_value
+        df["Score"] = df[target_col_name] / max_value
 
     return df
 
@@ -166,7 +176,9 @@ def remove_rows_by_values(df, column_name, values_to_remove):
     """
     # Check if the column exists in the DataFrame
     if column_name not in df.columns:
-        print(f"Warning: Column '{column_name}' not found in DataFrame. Returning original DataFrame.")
+        print(
+            f"Warning: Column '{column_name}' not found in DataFrame. Returning original DataFrame."
+        )
         return df
 
     # Create a boolean Series: True if the column value IS IN the list
@@ -183,20 +195,39 @@ def main():
     Take raw csv files of each pollutant and combine them in one XLSX with sheets named by pollutant
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument("raw_data_dir", help="a directory of TDYYYYXX00.txt files with Shift-JIS CSV of pollutant data")
-    parser.add_argument("output_xlsx",
-                        help="filename for XLSX output, same as file with stations output from address_to_gps.py")
+    parser.add_argument(
+        "raw_data_dir",
+        help="a directory of TDYYYYXX00.txt files with Shift-JIS CSV of pollutant data",
+    )
+    parser.add_argument(
+        "output_xlsx",
+        help="filename for XLSX output, same as file with stations output from address_to_gps.py",
+    )
     args = parser.parse_args()
 
-    pollutant_names = [None, 'SO2', 'NO', 'NO2', 'NOX', 'CO', 'OX', 'NMHC', 'CH4', 'THC', 'SPM', 'SP', 'PM25']
-    yearly_avg = '年平均値'
-    station_code = '測定局コード'
+    pollutant_names = [
+        None,
+        "SO2",
+        "NO",
+        "NO2",
+        "NOX",
+        "CO",
+        "OX",
+        "NMHC",
+        "CH4",
+        "THC",
+        "SPM",
+        "SP",
+        "PM25",
+    ]
+    yearly_avg = "年平均値"
+    station_code = "測定局コード"
     stations_to_ignore = [
         # Sakurajima Volcano (obviously not fair for comparing SO2 levels)
         46201220,
         # Kagoshima-ken, Kanoya-shi, just a little south of Sakurajima, and I can't imagine
         # it would actually have the highest annual PM2.5 in Japan apart from the 2022 eruption
-        46203010
+        46203010,
     ]
 
     files = get_all_files(args.raw_data_dir)
@@ -220,7 +251,9 @@ def main():
         # Calculate percentile score
         df = add_percentage_score_column(df, yearly_avg)
 
-        with pandas.ExcelWriter(args.output_xlsx, if_sheet_exists="overlay", mode="a") as excel_writer:
+        with pandas.ExcelWriter(
+                args.output_xlsx, if_sheet_exists="overlay", mode="a"
+        ) as excel_writer:
             df.to_excel(excel_writer, sheet_name=pollutant_name, index=False)
 
         print(f"Wrote {pollutant_name}")

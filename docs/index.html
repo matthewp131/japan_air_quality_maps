@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Japan Air Quality Visualizations</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
         body {
             padding: 2rem;
@@ -13,74 +14,84 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="mb-4">Japan Air Quality Visualizations</h1>
-        <p class="text-muted"><i>Note: Data availability typically lags by 2 years. Currently, 2022 is the latest year for which complete data is available.</i></p>
-        <p>Available visualizations:</p>
-        <div class="accordion" id="visualizationAccordion">
-            <!-- 2021 -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="heading2021">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2021" aria-expanded="false" aria-controls="collapse2021">
-                        2021
-                    </button>
-                </h2>
-                <div id="collapse2021" class="accordion-collapse collapse" aria-labelledby="heading2021" data-bs-parent="#visualizationAccordion">
-                    <div class="accordion-body">
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <a href="plotly/2021_scores_2PM2_5_OX_PM10.html">(2 * PM2.5 * OX) + PM10</a>
-                            </li>
-                            <li class="list-group-item">
-                                <a href="plotly/2021_scores_2PM2_5_OX_PM10_NOX_SO2_NMHC.html">(2 * PM2.5 * OX) + PM10 + NOX + SO2 + NMHC</a>
-                            </li>
-                            <li class="list-group-item">
-                                <a href="plotly/2021_scores_NOX_SO2_NMHC.html">NOX + SO2 + NMHC</a>
-                            </li>
-                            <li class="list-group-item">
-                                <a href="plotly/2021_scores_PM2_5.html">PM2.5</a>
-                            </li>
-                        </ul>
-                    </div>
+<div class="container">
+    <h1 class="mb-4">Japan Air Quality Visualizations</h1>
+    <p class="text-muted"><i>Note: Data availability typically lags by 2 years. Currently, 2022 is the latest year for
+        which complete data is available.</i></p>
+    <p>Available visualizations:</p>
+    <div class="accordion" id="visualizationAccordion">
+        <!-- 2021 -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="heading2021">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse2021" aria-expanded="false" aria-controls="collapse2021">
+                    2021
+                </button>
+            </h2>
+            <div id="collapse2021" class="accordion-collapse collapse" aria-labelledby="heading2021"
+                 data-bs-parent="#visualizationAccordion">
+                <div class="accordion-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <a href="plotly/2021_scores_2PM2_5_OX_PM10.html">(2 * PM2.5 * OX) + PM10</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="plotly/2021_scores_2PM2_5_OX_PM10_NOX_SO2_NMHC.html">(2 * PM2.5 * OX) + PM10 + NOX
+                                + SO2 + NMHC</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="plotly/2021_scores_NOX_SO2_NMHC.html">NOX + SO2 + NMHC</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="plotly/2021_scores_PM2_5.html">PM2.5</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-            <!-- 2022 -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="heading2022">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2022" aria-expanded="false" aria-controls="collapse2022">
-                        2022
-                    </button>
-                </h2>
-                <div id="collapse2022" class="accordion-collapse collapse" aria-labelledby="heading2022" data-bs-parent="#visualizationAccordion">
-                    <div class="accordion-body">
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <a href="plotly/2022_scores_2PM2_5_OX_PM10_NOX_SO2_NMHC.html">(2 * PM2.5 * OX) + PM10 + NOX + SO2 + NMHC</a>
-                            </li>
-                            <li class="list-group-item">
-                                <a href="plotly/2022_scores_2PM2_5_OX_PM10_NOX_SO2.html">(2 * PM2.5 * OX) + PM10 + NOX + SO2</a>
-                            </li>
-                            <li class="list-group-item">
-                                <a href="plotly/2022_scores_2PM2_5_OX_PM10.html">(2 * PM2.5 * OX) + PM10</a>
-                            </li>
-                            <li class="list-group-item">
-                                <a href="plotly/2022_scores_NOX_SO2_NMHC.html">NOX + SO2 + NMHC</a>
-                            </li>
-                            <li class="list-group-item">
-                                <a href="plotly/2022_scores_NOX_SO2.html">NOX + SO2</a>
-                            </li>
-                            <li class="list-group-item">
-                                <a href="plotly/2022_scores_PM25.html">PM2.5</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <!-- Add more years here as they become available -->
         </div>
+        <!-- 2022 -->
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="heading2022">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse2022" aria-expanded="false" aria-controls="collapse2022">
+                    2022
+                </button>
+            </h2>
+            <div id="collapse2022" class="accordion-collapse collapse" aria-labelledby="heading2022"
+                 data-bs-parent="#visualizationAccordion">
+                <div class="accordion-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <a href="plotly/2022_scores_2PM2_5_OX_PM10_NOX_SO2_NMHC.html">(2 * PM2.5 * OX) + PM10 + NOX
+                                + SO2 + NMHC</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="plotly/2022_scores_2PM2_5_OX_PM10_NOX_SO2.html">(2 * PM2.5 * OX) + PM10 + NOX +
+                                SO2</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="plotly/2022_scores_2PM2_5_OX_PM10.html">(2 * PM2.5 * OX) + PM10</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="plotly/2022_scores_NOX_SO2_NMHC.html">NOX + SO2 + NMHC</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="plotly/2022_scores_NOX_SO2.html">NOX + SO2</a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="plotly/2022_scores_PM25.html">PM2.5</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- Add more years here as they become available -->
     </div>
+</div>
 
-    <!-- Bootstrap JS Bundle (Optional, but often useful) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<!-- Bootstrap JS Bundle (Optional, but often useful) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 </body>
 </html>

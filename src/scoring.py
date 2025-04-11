@@ -1,6 +1,6 @@
-import pandas
-import openpyxl
 import argparse
+
+import pandas
 
 
 def main():
@@ -9,22 +9,52 @@ def main():
     for each station.
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument("input_xlsx",
-                        help="a XLSX Workbook with individual sheets for each pollutant with a Score column, as well as Stations")
-    parser.add_argument("output_xlsx", help="a XLSX Workbook storing scores by pollutant for each station")
+    parser.add_argument(
+        "input_xlsx",
+        help="a XLSX Workbook with individual sheets for each pollutant with a Score column, as well as Stations",
+    )
+    parser.add_argument(
+        "output_xlsx",
+        help="a XLSX Workbook storing scores by pollutant for each station",
+    )
     args = parser.parse_args()
 
-    msc = '測定局コード'
-    prefecture_romaji = '都道府県名_ローマ字'
-    city_romaji = '市区町村名_ローマ字'
-    station_name = '測定局名'
+    msc = "測定局コード"
     station_code = "国環研局番"
 
-    with open(args.input_xlsx, 'rb') as f:
-        all_pollutants = pandas.read_excel(f, sheet_name=['SO2', 'NO', 'NO2', 'NOX', 'CO', 'OX', 'NMHC', 'CH4', 'THC', 'SPM', 'PM25', 'Stations'])
+    with open(args.input_xlsx, "rb") as f:
+        all_pollutants = pandas.read_excel(
+            f,
+            sheet_name=[
+                "SO2",
+                "NO",
+                "NO2",
+                "NOX",
+                "CO",
+                "OX",
+                "NMHC",
+                "CH4",
+                "THC",
+                "SPM",
+                "PM25",
+                "Stations",
+            ],
+        )
 
-    pollutants_to_score = ['SO2', 'NO', 'NO2', 'NOX', 'CO', 'OX', 'NMHC', 'CH4', 'THC', 'SPM', 'PM25']
-    stations = all_pollutants['Stations']
+    pollutants_to_score = [
+        "SO2",
+        "NO",
+        "NO2",
+        "NOX",
+        "CO",
+        "OX",
+        "NMHC",
+        "CH4",
+        "THC",
+        "SPM",
+        "PM25",
+    ]
+    stations = all_pollutants["Stations"]
 
     aq_scores = {}
 
@@ -35,7 +65,7 @@ def main():
         other_pollutants.remove(pollutant)
 
         # For every measurement station, copy score for each pollutant
-        for index, row in all_pollutants[pollutant].iterrows():
+        for _, row in all_pollutants[pollutant].iterrows():
             # Skip if we are missing Station info with GPS
             if stations.loc[stations[station_code] == row[msc]].empty:
                 print("Station", row[msc], "not found")
@@ -43,16 +73,21 @@ def main():
 
             # If row for this measurement station already exists, add the score for this pollutant
             if row[msc] in aq_scores:
-                aq_scores[row[msc]][pollutant] = row['Score']
+                aq_scores[row[msc]][pollutant] = row["Score"]
             # If need to add a new row, copy in Station info, and set other pollutant scores to None
             else:
                 aq_score_dict = {
-                    'measurement_station_code': row[msc],
-                    'full_address': stations.loc[
-                        stations[station_code] == row[msc], "full_address"].item(),
-                    'latitude': stations.loc[stations[station_code] == row[msc], "latitude"].item(),
-                    'longitude': stations.loc[stations[station_code] == row[msc], "longitude"].item(),
-                    pollutant: row['Score'],
+                    "measurement_station_code": row[msc],
+                    "full_address": stations.loc[
+                        stations[station_code] == row[msc], "full_address"
+                    ].item(),
+                    "latitude": stations.loc[
+                        stations[station_code] == row[msc], "latitude"
+                    ].item(),
+                    "longitude": stations.loc[
+                        stations[station_code] == row[msc], "longitude"
+                    ].item(),
+                    pollutant: row["Score"],
                 }
                 for other_pollutant in other_pollutants:
                     aq_score_dict[other_pollutant] = None
@@ -62,31 +97,49 @@ def main():
 
     # Calculate more composite air quality scores
     df = pandas.DataFrame(aq_scores.values())
-    df['2PM2.5_OX_PM10_NOX_SO2_NMHC'] = None
-    df['2PM2.5_OX_PM10_NOX_SO2'] = None
-    df['2PM2.5_OX_PM10'] = None
-    df['NOX_SO2_NMHC'] = None
-    df['NOX_SO2'] = None
+    df["2PM2.5_OX_PM10_NOX_SO2_NMHC"] = None
+    df["2PM2.5_OX_PM10_NOX_SO2"] = None
+    df["2PM2.5_OX_PM10"] = None
+    df["NOX_SO2_NMHC"] = None
+    df["NOX_SO2"] = None
 
     # (2 * PM2.5 * OX) + PM10 + NOX + SO2 + NMHC
-    df.loc[df['PM25'].notna() & df['OX'].notna() & df['SPM'].notna() & df['NOX'].notna() & df['SO2'].notna() & df[
-        'NMHC'].notna(), '2PM2.5_OX_PM10_NOX_SO2_NMHC'] = ((df['PM25'] * df['OX'] * 2) + df['SPM'] + df['NOX'] + df[
-        'SO2'] + df['NMHC']) / 7
+    df.loc[
+        df["PM25"].notna()
+        & df["OX"].notna()
+        & df["SPM"].notna()
+        & df["NOX"].notna()
+        & df["SO2"].notna()
+        & df["NMHC"].notna(),
+        "2PM2.5_OX_PM10_NOX_SO2_NMHC",
+    ] = (
+                (df["PM25"] * df["OX"] * 2) + df["SPM"] + df["NOX"] + df["SO2"] + df["NMHC"]
+        ) / 7
 
     # (2 * PM2.5 * OX) + PM10 + NOX + SO2
-    df.loc[df['PM25'].notna() & df['OX'].notna() & df['SPM'].notna() & df['NOX'].notna() & df['SO2'].notna(), '2PM2.5_OX_PM10_NOX_SO2'] = ((df['PM25'] * df['OX'] * 2) + df['SPM'] + df['NOX'] + df[
-        'SO2']) / 6
+    df.loc[
+        df["PM25"].notna()
+        & df["OX"].notna()
+        & df["SPM"].notna()
+        & df["NOX"].notna()
+        & df["SO2"].notna(),
+        "2PM2.5_OX_PM10_NOX_SO2",
+    ] = ((df["PM25"] * df["OX"] * 2) + df["SPM"] + df["NOX"] + df["SO2"]) / 6
 
     # (2 * PM2.5 * OX) + PM10
-    df.loc[df['PM25'].notna() & df['OX'].notna() & df['SPM'].notna(), '2PM2.5_OX_PM10'] = ((df['PM25'] * df[
-        'OX'] * 2) + df['SPM']) / 3
+    df.loc[
+        df["PM25"].notna() & df["OX"].notna() & df["SPM"].notna(), "2PM2.5_OX_PM10"
+    ] = ((df["PM25"] * df["OX"] * 2) + df["SPM"]) / 3
 
     # NOX + SO2 + NMHC
-    df.loc[df['NOX'].notna() & df['SO2'].notna() & df['NMHC'].notna(), 'NOX_SO2_NMHC'] = (df['NOX'] + df['SO2'] + df[
-        'NMHC']) / 3
+    df.loc[
+        df["NOX"].notna() & df["SO2"].notna() & df["NMHC"].notna(), "NOX_SO2_NMHC"
+    ] = (df["NOX"] + df["SO2"] + df["NMHC"]) / 3
 
     # NOX + SO2
-    df.loc[df['NOX'].notna() & df['SO2'].notna(), 'NOX_SO2'] = (df['NOX'] + df['SO2']) / 2
+    df.loc[df["NOX"].notna() & df["SO2"].notna(), "NOX_SO2"] = (
+                                                                       df["NOX"] + df["SO2"]
+                                                               ) / 2
 
     print(df.head())
 

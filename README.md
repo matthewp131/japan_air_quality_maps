@@ -2,7 +2,8 @@
 
 ## View Air Quality Maps
 
-See the [Github Pages](https://matthewp131.github.io/japan_air_quality_maps/) for this repo for the final output of Japan Air Quality
+See the [Github Pages](https://matthewp131.github.io/japan_air_quality_maps/) for this repo for the final output of
+Japan Air Quality
 maps, rendered with Plotly and displayed with Mapbox.
 
 ## Run it locally
