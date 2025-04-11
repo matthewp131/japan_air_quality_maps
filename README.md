@@ -24,39 +24,48 @@ GH_PAGES_MAPBOX_API_TOKEN=<YOUR_KEY>
 
 ### Download Data and Calculate Scores Column
 
-WIP...see data already in `data` directory
+[National Institute for Environmental Studies, The Environmental Observatory, Air Pollution Monitoring Data File](https://tenbou.nies.go.jp/download/)
+
+測定局データ for Monitoring Station data
+月間値・年間値データ for Air Quality data
+
+See data already in `data` directory
 
 ### Run Python Scripts
 
 #### Monitoring stations
 
-Go to TBD and download station locations txt file. It is already included in `data/TM20210000.txt`.
-
 ```bash
 cd src
-python ./address_to_gps.py ../data/TM20210000.txt ../data/2021.xlsx Stations
+python ./address_to_gps.py ../data/2022_raw/TM20220000.txt ../data/2022.xlsx Stations
+```
+
+#### Calculate Scores for each Pollutant
+
+```bash
+python .\consolidate_raw_data.py ../data/2022_raw ../data/2022.xlsx
 ```
 
 #### Fetch GPS Location of all Stations
 
 ```bash
-python ./geocoding_api.py ../data/2021.xlsx Stations ../output/gps_2021.json
+python ./geocoding_api.py ../data/2022.xlsx Stations ../output/gps_2022.json
 ```
 
 #### Add GPS Lat/Lon to XLSX
 
 ```bash
-python ./import_gps.py ../output/gps_2021.json ../data/2021.xlsx Stations
+python ./import_gps.py ../output/gps_2022.json ../data/2022.xlsx Stations
 ```
 
 #### Produce Scoring Sheet
 
 ```bash
-python .\scoring.py ..\data\2021.xlsx ../output/test.xlsx
+python .\scoring.py ..\data\2022.xlsx ../output/2022_scores.xlsx
 ```
 
 #### Generate Plotly Maps
 
 ```bash
-python .\plot_score.py ../output/2021_scores.xlsx ..\docs\plotly\
+python .\plot_score.py ../output/2022_scores.xlsx ..\docs\plotly\
 ```

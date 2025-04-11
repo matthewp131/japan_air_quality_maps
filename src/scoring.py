@@ -21,9 +21,9 @@ def main():
     station_code = "国環研局番"
 
     with open(args.input_xlsx, 'rb') as f:
-        all_pollutants = pandas.read_excel(f, sheet_name=['NMHC', 'SO2', 'NOX', 'PM2.5', 'PM10', 'OX', 'Stations'])
+        all_pollutants = pandas.read_excel(f, sheet_name=['SO2', 'NO', 'NO2', 'NOX', 'CO', 'OX', 'NMHC', 'CH4', 'THC', 'SPM', 'PM25', 'Stations'])
 
-    pollutants_to_score = ['NMHC', 'SO2', 'NOX', 'PM2.5', 'PM10', 'OX']
+    pollutants_to_score = ['SO2', 'NO', 'NO2', 'NOX', 'CO', 'OX', 'NMHC', 'CH4', 'THC', 'SPM', 'PM25']
     stations = all_pollutants['Stations']
 
     aq_scores = {}
@@ -67,13 +67,13 @@ def main():
     df['NOX_SO2_NMHC'] = None
 
     # (2 * PM2.5 * OX) + PM10 + NOX + SO2 + NMHC
-    df.loc[df['PM2.5'].notna() & df['OX'].notna() & df['PM10'].notna() & df['NOX'].notna() & df['SO2'].notna() & df[
-        'NMHC'].notna(), '2PM2.5_OX_PM10_NOX_SO2_NMHC'] = ((df['PM2.5'] * df['OX'] * 2) + df['PM10'] + df['NOX'] + df[
+    df.loc[df['PM25'].notna() & df['OX'].notna() & df['SPM'].notna() & df['NOX'].notna() & df['SO2'].notna() & df[
+        'NMHC'].notna(), '2PM2.5_OX_PM10_NOX_SO2_NMHC'] = ((df['PM25'] * df['OX'] * 2) + df['SPM'] + df['NOX'] + df[
         'SO2'] + df['NMHC']) / 7
 
     # (2 * PM2.5 * OX) + PM10
-    df.loc[df['PM2.5'].notna() & df['OX'].notna() & df['PM10'].notna(), '2PM2.5_OX_PM10'] = ((df['PM2.5'] * df[
-        'OX'] * 2) + df['PM10']) / 3
+    df.loc[df['PM25'].notna() & df['OX'].notna() & df['SPM'].notna(), '2PM2.5_OX_PM10'] = ((df['PM25'] * df[
+        'OX'] * 2) + df['SPM']) / 3
 
     # NOX + SO2 + NMHC
     df.loc[df['NOX'].notna() & df['SO2'].notna() & df['NMHC'].notna(), 'NOX_SO2_NMHC'] = (df['NOX'] + df['SO2'] + df[
