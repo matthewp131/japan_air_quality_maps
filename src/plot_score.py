@@ -19,6 +19,7 @@ def main():
 
     load_dotenv()
 
+    # Note: Switch to different API token here if you want to run locally. This token is restricted to the GH pages domain
     px.set_mapbox_access_token(os.getenv('GH_PAGES_MAPBOX_API_TOKEN'))
 
     with open(args.scores_xlsx, 'rb') as f:
@@ -29,7 +30,8 @@ def main():
         str) + '<br>' + 'PM2.5: ' + df['PM25'].astype(str) + '<br>' + 'PM10: ' + df['SPM'].astype(
         str) + '<br>' + 'OX: ' + df['OX'].astype(str)
 
-    pollutants_to_map = ['PM25', '2PM2.5_OX_PM10_NOX_SO2_NMHC', '2PM2.5_OX_PM10_NOX_SO2', '2PM2.5_OX_PM10', 'NOX_SO2_NMHC', 'NOX_SO2']
+    pollutants_to_map = ['PM25', '2PM2.5_OX_PM10_NOX_SO2_NMHC', '2PM2.5_OX_PM10_NOX_SO2', '2PM2.5_OX_PM10',
+                         'NOX_SO2_NMHC', 'NOX_SO2']
 
     for pollutant in pollutants_to_map:
         df5 = df.loc[df[pollutant].notna()]

@@ -74,7 +74,7 @@ def main():
         'SO2'] + df['NMHC']) / 7
 
     # (2 * PM2.5 * OX) + PM10 + NOX + SO2
-    df.loc[df['PM25'].notna() & df['OX'].notna() & df['SPM'].notna() & df['NOX'].notna() & df['SO2'].notna(), '2PM2.5_OX_PM10_NOX_SO2_NMHC'] = ((df['PM25'] * df['OX'] * 2) + df['SPM'] + df['NOX'] + df[
+    df.loc[df['PM25'].notna() & df['OX'].notna() & df['SPM'].notna() & df['NOX'].notna() & df['SO2'].notna(), '2PM2.5_OX_PM10_NOX_SO2'] = ((df['PM25'] * df['OX'] * 2) + df['SPM'] + df['NOX'] + df[
         'SO2']) / 6
 
     # (2 * PM2.5 * OX) + PM10
