@@ -19,7 +19,7 @@ def main():
 
     load_dotenv()
 
-    px.set_mapbox_access_token(os.getenv('MAPBOX_API_TOKEN'))
+    px.set_mapbox_access_token(os.getenv('GH_PAGES_MAPBOX_API_TOKEN'))
 
     with open(args.scores_xlsx, 'rb') as f:
         df = pd.read_excel(f)
