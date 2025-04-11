@@ -25,12 +25,11 @@ def main():
         df = pd.read_excel(f)
 
     df['size'] = 0.1
-    df['hover_data'] = '<br>NMHC: ' + df['NMHC'].astype(str) + '<br>' + 'NOX: ' + df['NOX'].astype(
-        str) + '<br>' + 'SO2: ' + \
-                       df['SO2'].astype(str) + '<br>' + 'PM2.5: ' + df['PM25'].astype(str) + '<br>' + 'PM10: ' + \
-                       df['SPM'].astype(str) + '<br>' + 'OX: ' + df['OX'].astype(str)
+    df['hover_data'] = '<br>NOX: ' + df['NOX'].astype(str) + '<br>' + 'SO2: ' + df['SO2'].astype(
+        str) + '<br>' + 'PM2.5: ' + df['PM25'].astype(str) + '<br>' + 'PM10: ' + df['SPM'].astype(
+        str) + '<br>' + 'OX: ' + df['OX'].astype(str)
 
-    pollutants_to_map = ['PM25', '2PM2.5_OX_PM10_NOX_SO2_NMHC', '2PM2.5_OX_PM10', 'NOX_SO2_NMHC']
+    pollutants_to_map = ['PM25', '2PM2.5_OX_PM10_NOX_SO2_NMHC', '2PM2.5_OX_PM10_NOX_SO2', '2PM2.5_OX_PM10', 'NOX_SO2_NMHC', 'NOX_SO2']
 
     for pollutant in pollutants_to_map:
         df5 = df.loc[df[pollutant].notna()]

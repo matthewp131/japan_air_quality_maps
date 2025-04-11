@@ -63,13 +63,19 @@ def main():
     # Calculate more composite air quality scores
     df = pandas.DataFrame(aq_scores.values())
     df['2PM2.5_OX_PM10_NOX_SO2_NMHC'] = None
+    df['2PM2.5_OX_PM10_NOX_SO2'] = None
     df['2PM2.5_OX_PM10'] = None
     df['NOX_SO2_NMHC'] = None
+    df['NOX_SO2'] = None
 
     # (2 * PM2.5 * OX) + PM10 + NOX + SO2 + NMHC
     df.loc[df['PM25'].notna() & df['OX'].notna() & df['SPM'].notna() & df['NOX'].notna() & df['SO2'].notna() & df[
         'NMHC'].notna(), '2PM2.5_OX_PM10_NOX_SO2_NMHC'] = ((df['PM25'] * df['OX'] * 2) + df['SPM'] + df['NOX'] + df[
         'SO2'] + df['NMHC']) / 7
+
+    # (2 * PM2.5 * OX) + PM10 + NOX + SO2
+    df.loc[df['PM25'].notna() & df['OX'].notna() & df['SPM'].notna() & df['NOX'].notna() & df['SO2'].notna(), '2PM2.5_OX_PM10_NOX_SO2_NMHC'] = ((df['PM25'] * df['OX'] * 2) + df['SPM'] + df['NOX'] + df[
+        'SO2']) / 6
 
     # (2 * PM2.5 * OX) + PM10
     df.loc[df['PM25'].notna() & df['OX'].notna() & df['SPM'].notna(), '2PM2.5_OX_PM10'] = ((df['PM25'] * df[
@@ -78,6 +84,9 @@ def main():
     # NOX + SO2 + NMHC
     df.loc[df['NOX'].notna() & df['SO2'].notna() & df['NMHC'].notna(), 'NOX_SO2_NMHC'] = (df['NOX'] + df['SO2'] + df[
         'NMHC']) / 3
+
+    # NOX + SO2
+    df.loc[df['NOX'].notna() & df['SO2'].notna(), 'NOX_SO2'] = (df['NOX'] + df['SO2']) / 2
 
     print(df.head())
 
