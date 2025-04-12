@@ -1,6 +1,29 @@
 import argparse
 
 import pandas
+from pandas import Series
+
+
+def get_value_and_suffix_from_substring(row: Series, substring):
+    """
+    Finds a column containing the substring, returns its value with the
+    cleaned suffix of the column name.
+    """
+
+    for col_name in row.index.values:
+        if substring in col_name:
+            # Remove substring, strip whitespace, remove parentheses
+            index = col_name.index(substring)
+            start_index = index + len(substring)
+            suffix = (
+                col_name[start_index:]
+                .strip()
+                .replace("(", "")
+                .replace(")", "")
+            )
+            return str(row[col_name]) + f" {suffix}"
+    # Return None if no matching column is found
+    return None
 
 
 def main():
@@ -21,6 +44,7 @@ def main():
 
     msc = "測定局コード"
     station_code = "国環研局番"
+    yearly_avg = "年平均値"
 
     with open(args.input_xlsx, "rb") as f:
         all_pollutants = pandas.read_excel(
@@ -71,9 +95,14 @@ def main():
                 print("Station", row[msc], "not found")
                 continue
 
+            # also store raw values
+            raw_col_name = pollutant + "_raw"
+            raw_col_value = get_value_and_suffix_from_substring(row, yearly_avg)
+
             # If row for this measurement station already exists, add the score for this pollutant
             if row[msc] in aq_scores:
                 aq_scores[row[msc]][pollutant] = row["Score"]
+                aq_scores[row[msc]][raw_col_name] = raw_col_value
             # If need to add a new row, copy in Station info, and set other pollutant scores to None
             else:
                 aq_score_dict = {
@@ -88,10 +117,13 @@ def main():
                         stations[station_code] == row[msc], "longitude"
                     ].item(),
                     pollutant: row["Score"],
+                    raw_col_name: raw_col_value,
                 }
                 for other_pollutant in other_pollutants:
                     aq_score_dict[other_pollutant] = None
+                    aq_score_dict[other_pollutant + "_raw"] = None
 
+                print(aq_score_dict)
                 # Write new row
                 aq_scores[row[msc]] = aq_score_dict
 
@@ -113,8 +145,8 @@ def main():
         & df["NMHC"].notna(),
         "2PM2.5_OX_PM10_NOX_SO2_NMHC",
     ] = (
-                (df["PM25"] * df["OX"] * 2) + df["SPM"] + df["NOX"] + df["SO2"] + df["NMHC"]
-        ) / 7
+        (df["PM25"] * df["OX"] * 2) + df["SPM"] + df["NOX"] + df["SO2"] + df["NMHC"]
+    ) / 7
 
     # (2 * PM2.5 * OX) + PM10 + NOX + SO2
     df.loc[
@@ -138,8 +170,8 @@ def main():
 
     # NOX + SO2
     df.loc[df["NOX"].notna() & df["SO2"].notna(), "NOX_SO2"] = (
-                                                                       df["NOX"] + df["SO2"]
-                                                               ) / 2
+        df["NOX"] + df["SO2"]
+    ) / 2
 
     print(df.head())
 

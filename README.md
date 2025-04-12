@@ -6,6 +6,24 @@ See the [Github Pages](https://matthewp131.github.io/japan_air_quality_maps/) fo
 Japan Air Quality
 maps, rendered with Plotly and displayed with Mapbox.
 
+## Methodology
+
+This collection of scripts combines the Japan NIES Air Quality data files into a single XLSX spreadsheet, enriches the
+measurement station data with GPS Lat/Lon locations using the Google Geocoding API, and scores each pollutant as a
+proportion of the max for that pollutant. For example, measurement station 3320520 with address 岡山県笠岡市茂平２８０ is
+located at (34.4942919, 133.4605572) and has an annual average PM2.5 of 14.3 μg/m3, which is the highest in Japan so it
+receives a score of 1. Measurement station 1202080 with address 北海道函館市北美原１−９−１６ is located at (36.1461065,
+137.2522083) and has an annual average PM2.5 of 4.4 μg/m3, which is the lowest in Japan, so it receives a score of
+0.3077.
+
+These scores are plotted using Plotly on top of a Mapbox map. As the most generally accepted guage of pollution, the
+PM2.5 map shows that, in addition to urban areas being worse than rural ones, air quality is generally worse going
+towards the south and west. In addition to single pollutant scores, I have selected a few combinational equations for
+aggregating scores of multiple pollutants. For combined scores, only measurement stations which contained all of the
+pollutants in the equation are included. This means that the combined maps sometimes have significantly fewer
+measurement locations. The `(2 * PM2.5 * OX) + PM10 + NOX + SO2` appears to give the best overall impression of air
+pollution, with Osaka standing out as having 11 of the highest scores in the top 25.
+
 ## Run it locally
 
 ### Dependencies

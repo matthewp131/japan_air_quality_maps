@@ -31,23 +31,27 @@ def main():
     df["size"] = 0.1
     df["hover_data"] = (
             "<br>NOX: "
-            + df["NOX"].astype(str)
+            + df["NOX_raw"].astype(str)
             + "<br>"
             + "SO2: "
-            + df["SO2"].astype(str)
+            + df["SO2_raw"].astype(str)
             + "<br>"
             + "PM2.5: "
-            + df["PM25"].astype(str)
+            + df["PM25_raw"].astype(str)
             + "<br>"
             + "PM10: "
-            + df["SPM"].astype(str)
+            + df["SPM_raw"].astype(str)
             + "<br>"
             + "OX: "
-            + df["OX"].astype(str)
+            + df["OX_raw"].astype(str)
     )
 
     pollutants_to_map = [
         "PM25",
+        "NOX",
+        "SO2",
+        "SPM",
+        "OX",
         "2PM2.5_OX_PM10_NOX_SO2_NMHC",
         "2PM2.5_OX_PM10_NOX_SO2",
         "2PM2.5_OX_PM10",
