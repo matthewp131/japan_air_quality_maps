@@ -225,6 +225,8 @@ def main():
     stations_to_ignore = [
         # Sakurajima Volcano (obviously not fair for comparing SO2 levels)
         46201220,
+        # Sakurajima Volcano
+        46302020,
         # Kagoshima-ken, Kanoya-shi, just a little south of Sakurajima, and I can't imagine
         # it would actually have the highest annual PM2.5 in Japan apart from the 2022 eruption
         46203010,
